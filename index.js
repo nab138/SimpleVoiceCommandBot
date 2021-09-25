@@ -1,6 +1,7 @@
 const { Client } = require('discord.js');
 const { getVoiceConnection } = require('@discordjs/voice');
 const config = require('./config.json')
+const { token } = require('./token.json')
 const { startPlaying, connectToChannel, createPlayer, handleStateChange, createRecieverStream } = require('./utils/voice')
 const client = new Client({ intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_VOICE_STATES'] });
 const speachToText = require('./utils/speachtotext')
@@ -70,4 +71,4 @@ async function listen(receiver, userID, message, commandMode){
         listen(receiver, userID, message)
     }
 }
-void client.login(config.token);
+void client.login(token);
