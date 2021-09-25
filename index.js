@@ -35,9 +35,10 @@ async function executeCommand(command, args, message){
 		} else {
 			await message.reply('Join a voice channel then try again!');
 		}
-	} else if (['les', 'play', 'slay', 'clay'].includes){
+	} else if (['les', 'play', 'slay', 'clay'].includes(command)){
         try {
-            const connection = getVoiceConnection(message.guild.id);
+            const channel = message.member?.voice.channel;
+            const connection = await connectToChannel(channel);
             const player = await createPlayer()
             connection.subscribe(player);
             let yt_info = await play.search(args.join(' '), { limit : 1 })
@@ -47,15 +48,14 @@ async function executeCommand(command, args, message){
             console.error(e)
         }
     } else {
-        message.channel.send("Unkown command!")
+        return message.channel.send("Unkown command!")
     }
 }
 async function listen(receiver, userID, message, commandMode){
     if(!commandMode){
         let audio = await createRecieverStream(receiver, userID)
         let text = await speachToText(audio, 'smallmodel')
-        setTimeout(function(){fs.unlinkSync(audio)}, 500)
-        console.log(text)
+        setTimeout(function(){fs.unlinkSync(audio)}, 100)
         if(text.toLowerCase() == config.wakeWord){
             message.channel.send("Listening to command...")
             listen(receiver, userID, message, true)
@@ -64,10 +64,10 @@ async function listen(receiver, userID, message, commandMode){
         }
     } else {
         let audio = await createRecieverStream(receiver, userID)
-        let args = (await speachToText(audio, 'smallmodel')).split(' ')
+        let args = (await speachToText(audio, 'smallmodel', true)).split(' ')
         let command = args.shift()
         executeCommand(command, args, message)
-        setTimeout(function(){fs.unlinkSync(audio)}, 500)
+        setTimeout(function(){fs.unlinkSync(audio)}, 100)
         listen(receiver, userID, message)
     }
 }

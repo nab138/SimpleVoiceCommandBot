@@ -98,7 +98,7 @@ function createRecieverStream(receiver, userID){
 			maxPackets: 10,
 		},
 	});
-	console.log(`👂 Started recording ${filename}`);
+	console.log(`Started recording ${filename}`);
 
 	pipeline(opusStream, oggStream, out, (err) => {
 		if (err) {
@@ -110,7 +110,7 @@ function createRecieverStream(receiver, userID){
                        if (err) {
                           reject(err)
                         }
-                        console.log(`✅ Recorded ${filename}`);
+                        console.log(`Recorded ${filename}`);
                         resolve(`./recordings/${date}.wav`)
                      })
                 } else {

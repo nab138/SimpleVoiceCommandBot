@@ -20,5 +20,8 @@
     "play-dl": "^1.0.3",
     "prism-media": "^2.0.0-alpha.0",
     "vosk": "^0.3.31"
+  },
+  "devDependencies": {
+    "pkg": "^5.3.2"
   }
 }
