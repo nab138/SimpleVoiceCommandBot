@@ -9,17 +9,19 @@ const {
 	VoiceConnectionStatus,
 	joinVoiceChannel,
     EndBehaviorType,
+    getVoiceConnection
 } = require('@discordjs/voice');
-const fs = require('fs');
+const fs = require('fs-extra');
 const { opus } = require('prism-media');
 const { pipeline } = require('stream');
 const convert = require('./convert')
 const config = require('../config.json')
+const discordTTS = require('discord-tts');
 module.exports = {
     startPlaying,
     connectToChannel,
     createPlayer,
-    handleStateChange,
+    tts,
     createRecieverStream
 }
 function createPlayer(){
@@ -37,22 +39,13 @@ function createPlayer(){
         }
 })
 }
-function handleStateChange(oldState, newState, connection, type) {
-    switch(type){
-        case 'infinite':
-            if (newState.status === AudioPlayerStatus.Idle) {
-                // Implement later
-                console.log('Not implemented yet, I probably wont do it either so do it yourself');
-                connection.destroy();
-            }
-            break;
-        case 'once':
-            if (newState.status === AudioPlayerStatus.Idle) {
-                connection.destroy();
-                console.log("Playback finished")
-            }
-            break;
-    }
+async function tts(message, guild, callback){
+    const connection = await getVoiceConnection(guild.id)
+    if(!connection) return message.reply("I'm not in the voice channel anymore!")
+    const player = await createPlayer()
+    const subscription = connection.subscribe(player);
+    startPlaying(discordTTS.getVoiceStream(message), player)
+    player.on('stateChange', (oldState, newState) => {if (newState.status === AudioPlayerStatus.Idle) {subscription.unsubscribe(); player.stop(); if(callback != null || callback != undefined){callback()}}});
 }
 
 
@@ -87,7 +80,7 @@ function createRecieverStream(receiver, userID){
 			duration: config.silencePeriod,
 		},
 	});
-    let filename = `recordingsRaw/${date}.ogg`
+    let filename = `./recordingsRaw/${date}.ogg`
     const out = fs.createWriteStream(filename);
 	const oggStream = new opus.OggLogicalBitstream({
 		opusHead: new opus.OpusHead({
@@ -98,23 +91,21 @@ function createRecieverStream(receiver, userID){
 			maxPackets: 10,
 		},
 	});
-	console.log(`Started recording ${filename}`);
 
 	pipeline(opusStream, oggStream, out, (err) => {
 		if (err) {
-			reject(err);
+			console.log(err)
 		} else {
-            convert(`./recordingsRaw/${date}.ogg`, `./recordings/${date}.wav`, function(err){
+            convert(filename, `./recordings/${date}.wav`, function(err){
                 if(!err) {
-                    fs.unlink(`./recordingsRaw/${date}.ogg`, (err) => {
+                    fs.unlink(filename, (err) => {
                        if (err) {
-                          reject(err)
+                          console.log(err)
                         }
-                        console.log(`Recorded ${filename}`);
                         resolve(`./recordings/${date}.wav`)
                      })
                 } else {
-                    reject(err)
+                    console.log(err)
                 }
              });
 		}

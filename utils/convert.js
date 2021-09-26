@@ -11,7 +11,6 @@ function convert(input, output, callback) {
         .outputOptions('-ac 1')
         .output(output)
         .on('end', function() {                    
-            console.log('conversion ended');
             callback(null);
         }).on('error', function(err){
             console.log('error: ', err.code, err.msg);
