@@ -37,7 +37,7 @@ async function executeCommand(command, args, message, isAudio){
 		} else {
 			await message.reply('Join a voice channel then try again!');
 		}
-	} else if (['les', 'play', 'slay', 'clay'].includes(command)){
+	} else if (['les', 'play', 'slay', 'clay', 'played'].includes(command)){
         try {
             let connection;
             const channel = message.member?.voice.channel;
@@ -67,7 +67,11 @@ async function executeCommand(command, args, message, isAudio){
                 guildPlayers.set(message.guild.id, { player, sub })
                 player.on('stateChange', (oldState, newState) => {if (newState.status === AudioPlayerStatus.Idle) {
                     player.stop()
+                    try {
                     connection.destroy()
+                    } catch (e){
+                        void e
+                    }
                     guildPlayers.delete(message.guild.id)
                 }});
             }});
@@ -75,11 +79,12 @@ async function executeCommand(command, args, message, isAudio){
         } catch (e){
             console.error(e)
         }
-    } else if (['disconnect', 'stop', 'dc', 'end'].includes(command)) {
+    } else if (['disconnect', 'stop', 'dc', 'end', 'leave'].includes(command)) {
         const connection = await getVoiceConnection(message.guild.id)
         if(!connection) return message.reply("I'm not even in a voice channel!")
         tts('Goodbye you little imposter nerd', message.guild, function(){connection.destroy(); guildPlayers.delete(message.guild.id); message.channel.send('disconnected!')})
 	} else if(isAudio) {
+        message.channel.send(`Hmm.. I couldn't understand you. I heard: "${command + ' ' + args.join(' ')}". Make sure to talk clearly and slowly.`)
         if(guildPlayers.has(message.guild.id)){
             let guildPlayer = guildPlayers.get(message.guild.id)
             guildPlayer.sub.unsubscribe()
