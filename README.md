@@ -1,6 +1,8 @@
 # SimpleVoiceCommandBot
 A bot that responds to voice commands in discord!
 
+This bot is undergoing active development and is not done.
+
 This bot is customizable within discord, using -config, but you can change some settings in config.json aswell.
 
 ## How to run:
