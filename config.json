@@ -1,5 +1,6 @@
 {
     "silencePeriod": 750,
     "prefix": "-",
-    "wakeWord": ["music", "the music"]
+    "wakeWord": ["music", "the music"],
+    "embedColor": "#eb4034"
 }

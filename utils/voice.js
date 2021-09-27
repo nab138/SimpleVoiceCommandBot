@@ -1,4 +1,5 @@
 require('module-alias/register');
+const gtts = require('node-gtts')('en');
 const {
 	NoSubscriberBehavior,
 	StreamType,
@@ -16,7 +17,6 @@ const { opus } = require('prism-media');
 const { pipeline } = require('stream');
 const convert = require('./convert')
 const config = require('../config.json')
-const discordTTS = require('discord-tts');
 module.exports = {
     startPlaying,
     connectToChannel,
@@ -44,7 +44,7 @@ async function tts(message, guild, callback){
     if(!connection) return message.reply("I'm not in the voice channel anymore!")
     const player = await createPlayer()
     const subscription = connection.subscribe(player);
-    startPlaying(discordTTS.getVoiceStream(message), player)
+    startPlaying(gtts.stream(message), player)
     player.on('stateChange', (oldState, newState) => {if (newState.status === AudioPlayerStatus.Idle) {subscription.unsubscribe(); player.stop(); if(callback != null || callback != undefined){callback()}}});
 }
 
@@ -71,13 +71,19 @@ async function connectToChannel(channel) {
 		console.error(error)
 	}
 }
-function createRecieverStream(receiver, userID){
+function createRecieverStream(receiver, userID, guildID, client){
     return new Promise((resolve, reject) => {
     let date = Date.now()
+    let silencePeriod;
+    if(client.guildSettings.has(guildID)){
+        silencePeriod = client.guildSettings.get(guildID).micTimeout ?? client.config.silencePeriod
+    } else {
+        silencePeriod = client.config.silencePeriod
+    }
     const opusStream = receiver.subscribe(userID, {
 		end: {
 			behavior: EndBehaviorType.AfterSilence,
-			duration: config.silencePeriod,
+			duration: silencePeriod,
 		},
 	});
     let filename = `./recordingsRaw/${date}.ogg`
