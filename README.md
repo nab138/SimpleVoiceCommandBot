@@ -8,11 +8,11 @@ This bot is customizable within discord, using -config, but you can change some 
 ## How to run:
 You run this bot like literally any other discord bot ever but heres the instructions anyway.
 
-You have to have nodejs v16 or above installed.
+You have to have nodejs v16 or above installed, as well as python3 (might work with python2, haven't tested, let me know if you try to use it).
 
 Step one: Clone the repository and `cd` into it. `git clone https://github.com/nab138/SimpleVoiceCommandBot.git && cd SimpleVoiceCommandBot`
 
-Step two: Install dependencies. `npm install`
+Step two: Install dependencies. `npm install` `pip install vosk` (dont ask why I'm using the python version of a nodejs compatible library, its a long story)
 
 Step three: Create an application on the [Discord Developer Portal](https://discord.com/developers/applications/), then create a bot, and copy the token.
 
