@@ -10,7 +10,7 @@ module.exports = {
                 return message.channel.send(`Click the **link** if the join button isnt working:  ${invite.code}`);
             });
             if(isAudio && await getVoiceConnection(message.guild.id)){
-                tts(`Click the link sent in the channel you ran the listen command in.`, message.guild)
+                tts(`Click the link sent in the channel you ran the listen command in.`, message)
             }
         }
 	},

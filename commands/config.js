@@ -37,6 +37,8 @@ module.exports = {
                     break*/
                 case 'mictimeout':
                     if(isNaN(value)) return message.channel.send(`Please provide a valid milisecond value (without ms at the end)`)
+                    if(parseInt(value) < 100) return message.channel.send(`Please use a bigger value!`)
+                    if(parseInt(value) > 1500) return message.channel.send(`Please use a smaller value!`)
                     curConfig.micTimeout = value
                     client.guildSettings.set(message.guild.id, curConfig)
                     message.channel.send(`Succesfully set the mic timeout to ${value}ms`)

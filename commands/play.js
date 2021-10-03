@@ -9,7 +9,7 @@ module.exports = {
         try {
             let connection = await getVoiceConnection(message.guild.id);
             const channel = message.member?.voice.channel;
-            if (connection) {
+            if (!connection) {
                 try {
                     connection = await connectToChannel(channel)
                 } catch (error) {

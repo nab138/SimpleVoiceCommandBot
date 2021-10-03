@@ -14,7 +14,7 @@ const {
 } = require('@discordjs/voice');
 const fs = require('fs-extra');
 const { opus } = require('prism-media');
-const { pipeline } = require('stream');
+const { pipeline, Stream } = require('stream');
 const convert = require('./convert')
 const config = require('../config.json')
 module.exports = {
@@ -22,7 +22,8 @@ module.exports = {
     connectToChannel,
     createPlayer,
     tts,
-    createRecieverStream
+    createRecieverStream,
+    pipeToOtherGuild
 }
 function createPlayer(){
     return new Promise((resolve, reject) => {
@@ -39,13 +40,13 @@ function createPlayer(){
         }
 })
 }
-async function tts(message, guild, callback){
-    const connection = await getVoiceConnection(guild.id)
+async function tts(text, message, callback){
+    const connection = await getVoiceConnection(message.guild.id)
     if(!connection) return message.reply("I'm not in the voice channel anymore!")
     const player = await createPlayer()
-    const subscription = connection.subscribe(player);
-    startPlaying(gtts.stream(message), player)
-    player.on('stateChange', (oldState, newState) => {if (newState.status === AudioPlayerStatus.Idle) {subscription.unsubscribe(); player.stop(); if(callback != null || callback != undefined){callback()}}});
+    const subscription = connection ? connection.subscribe(player) : null;
+    if(connection) startPlaying(gtts.stream(text), player)
+    if(connection) player.on('stateChange', (oldState, newState) => {try {if (newState.status === AudioPlayerStatus.Idle) {subscription.unsubscribe(); player.stop(); if(callback != null && callback != undefined){callback()}}}catch(e){void e; connection.destroy()}});
 }
 
 
@@ -70,6 +71,10 @@ async function connectToChannel(channel) {
 		connection.destroy();
 		console.error(error)
 	}
+}
+async function pipeToOtherGuild(receiver, userID, targetPlayer){
+    const opusStream = receiver.subscribe(userID)
+    startPlaying(opusStream, targetPlayer, StreamType.Opus)
 }
 function createRecieverStream(receiver, userID, guildID, client){
     return new Promise((resolve, reject) => {
