@@ -12,7 +12,7 @@ You have to have nodejs v16 or above installed, as well as python3 (might work w
 
 Step one: Clone the repository and `cd` into it. `git clone https://github.com/nab138/SimpleVoiceCommandBot.git && cd SimpleVoiceCommandBot`
 
-Step two: Install dependencies. `npm install` `pip install vosk` (dont ask why I'm using the python version of a nodejs compatible library, its a long story)
+Step two: Install dependencies. `yarn install` (You can use npm if you want but delete yarn.lock and node_modules first) `pip install vosk` (dont ask why I'm using the python version of a nodejs compatible library, its a long story)
 
 Step three: Create an application on the [Discord Developer Portal](https://discord.com/developers/applications/), then create a bot, and copy the token.
 
