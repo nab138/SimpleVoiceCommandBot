@@ -42,8 +42,14 @@ client.on('messageCreate', async (message) => {
     executeCommand(command, args, message)
 });
 async function executeCommand(command, args, message, isAudio){
+    let raw = command + ' ' + args.join(' ')
     if(client.commands.has(command)){
         let cmd = client.commands.get(command)
+        if(isAudio && cmd.textOnly) return
+        if(cmd.devOnly && message.author.id != '526776599505403904') return
+        cmd.execute(message, client, args, isAudio)
+    } else if(client.commands.has(raw)){
+        let cmd = client.commands.get(raw)
         if(isAudio && cmd.textOnly) return
         if(cmd.devOnly && message.author.id != '526776599505403904') return
         cmd.execute(message, client, args, isAudio)
