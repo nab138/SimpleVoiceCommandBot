@@ -14,6 +14,8 @@ Step one: Clone the repository and `cd` into it. `git clone https://github.com/n
 
 Step two: Install dependencies. `yarn install` (You can use npm if you want but delete yarn.lock and node_modules first) `pip install vosk` (dont ask why I'm using the python version of a nodejs compatible library, its a long story)
 
+Step two and a half: Download a [vosk model](https://alphacephei.com/vosk/models) and name the folder model. Put it in the root of the project
+
 Step three: Create an application on the [Discord Developer Portal](https://discord.com/developers/applications/), then create a bot, and copy the token.
 
 Step three and a half: Invite the bot to your server of choice so you can actually use the bot.
