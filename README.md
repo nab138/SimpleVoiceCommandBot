@@ -20,6 +20,6 @@ Step three and a half: Invite the bot to your server of choice so you can actual
 
 Step four: Grab your token and client ID from the Discord Developer Portal and plug them into token.json.
 
-Step five: Publish slash commands. `node utils/slash-commands.js` (Tip: Global Slash commands take up to an hour to propogate. If you want to test slash commands without waiting, publish them to one guild which is instant by adding --guildID <guildid> to the command.)
+Step five: Publish slash commands. `node utils/slash-commands.js` (Tip: Global Slash commands take up to an hour to propogate. If you want to test slash commands without waiting, publish them to one guild which is instant by adding `--guildID <guildid>` to the command.)
 
 Step five: Start the bot. `node .`
