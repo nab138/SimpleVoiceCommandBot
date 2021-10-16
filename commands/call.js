@@ -4,7 +4,8 @@ const { getVoiceConnection, VoiceConnectionStatus } = require('@discordjs/voice'
 module.exports = {
 	names: ['call', 'userphone'],
 	async execute(message, client, args, isAudio) {
-        message.channel.send("Connecting to userphone...")
+        
+        message.reply("Connecting to userphone...")
         if(client.userphoneQueue.length > 0){
             let SecondConnection = client.userphoneQueue.shift()
             let connection = await getVoiceConnection(message.guild.id)
@@ -26,7 +27,6 @@ module.exports = {
                         entersState(connection, VoiceConnectionStatus.Signalling, 3_000),
                         entersState(connection, VoiceConnectionStatus.Connecting, 3_000),
                     ]);
-                    // Seems to be reconnecting to a new channel - ignore disconnect
                 } catch (error) {
                     tts('The other party hung up the user phone.', SecondConnection.message, SecondConnection.connection.destroy)
                     client.userphonesActive.delete(message.guild.id)

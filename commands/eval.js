@@ -5,9 +5,9 @@ module.exports = {
     devOnly: true,
 	async execute(message, client, args) {
         try {
-            message.channel.send(`Result: ${eval(args.join(' '))}`)
+            message.channel.send(`Result: \n\`\`\`${eval(args.join(' '))}\`\`\``)
         } catch (e) {
-            message.channel.send(`Error: ${e.stack}`)
+            message.channel.send(`Error: \n\`\`\`${e.stack}\`\`\``)
         }
 	},
 };

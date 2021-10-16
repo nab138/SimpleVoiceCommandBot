@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const { connectToChannel, startPlaying, createPlayer } = require('../utils/voice')
+const { connectToChannel, startPlaying, createPlayer, tts } = require('../utils/voice')
 const { AudioPlayerStatus, getVoiceConnection } = require('@discordjs/voice');
 const play = require('play-dl')
 const gtts = require('node-gtts')('en');
@@ -7,6 +7,13 @@ module.exports = {
 	names: ['les', 'play', 'slay', 'clay', 'played'],
 	async execute(message, client, args, isAudio) {
         try {
+            if(!args[0]) {
+                if(isAudio){
+                    return tts('Please provide a song!', message)
+                } else {
+                    return message.reply("Please provide a song!")
+                }
+            }
             let connection = await getVoiceConnection(message.guild.id);
             const channel = message.member?.voice.channel;
             if (!connection) {
@@ -30,11 +37,6 @@ module.exports = {
                 client.guildPlayers.set(message.guild.id, { player, sub })
                 player.on('stateChange', (oldState, newState) => {if (newState.status === AudioPlayerStatus.Idle) {
                     player.stop()
-                    try {
-                    connection.destroy()
-                    } catch (e){
-                        void e
-                    }
                     client.guildPlayers.delete(message.guild.id)
                 }});
             }});

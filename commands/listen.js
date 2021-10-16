@@ -5,6 +5,8 @@ module.exports = {
 	names: ['listen'],
 	textOnly: true,
 	async execute(message, client, args, isAudio) {
+		let curConfig = client.currentGuildSettings(message.guild.id)
+		if(curConfig.permissions.listen != "NONE" && !message.member.permissions.has(curConfig.permissions.listen)) return message.reply("You don't have permission to do this!")
 		if(!client.activeListening.has(message.guild.id)){
 			const channel = message.member?.voice.channel;
 			if (channel) {
@@ -20,7 +22,7 @@ module.exports = {
 						} catch (error) {
 							message.channel.send("Goodbye!")
 							client.activeListening.delete(message.guild.id)
-							connection.destroy();
+							try{connection.destroy()}catch(e){void e};
 						}
 					});
 					client.listen(connection.receiver, message)
@@ -33,7 +35,7 @@ module.exports = {
 				await message.reply('Join a voice channel then try again!');
 			}
 		} else {
-			message.reply("I'm already listening somewhere here!")
+			message.reply("I'm already listening somewhere here! In order to prevent excessive resource usage, only one person can use voice commands at a time in one guild.")
 		}
-	},
+	}
 };

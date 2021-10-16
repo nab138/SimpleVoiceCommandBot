@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",
     "@discordjs/voice": "^0.6.0",
     "check-word": "^1.1.0",
@@ -29,8 +30,5 @@
     "prism-media": "^2.0.0-alpha.0",
     "random-jokes-api": "^1.5.9",
     "vosk": "^0.3.31"
-  },
-  "devDependencies": {
-    "pkg": "^5.3.2"
   }
 }
