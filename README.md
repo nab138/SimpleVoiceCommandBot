@@ -31,3 +31,5 @@ In the future, contributors **may** recieve perks such as increasing the listene
 If you want to contribute, please open a Pull Request. If I don't review it within a week, message me on discord `nab138#2035`
 
 Don't know how to code, but still want to help? You can work on improving the README, updating the help command, or changing strings/words.
+
+Thank's for contributing!
