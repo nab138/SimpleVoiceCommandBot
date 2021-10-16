@@ -37,6 +37,7 @@ client.on('ready', async () => {
 client.on('messageCreate', async (message) => {
 	if (!message.guild) return;
     if(message.author.bot) return;
+    if(message.content == `<@${client.user.id}>` || message.content == `<@!${client.user.id}>`) client.commands.get('help').execute(message, client)
     if(!message.content.startsWith(config.prefix)) return;
     let args = message.content.slice(config.prefix.length).split(' ')
     let command = args.shift()
