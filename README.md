@@ -1,7 +1,7 @@
 # SimpleVoiceCommandBot
 A bot that responds to voice commands in discord!
 
-This bot is undergoing active development and is not done.
+This bot is undergoing active development and is not done. Contributions are welcome.
 
 This bot is customizable within discord, using -config, but you can change some settings in config.json aswell.
 
@@ -23,3 +23,11 @@ Step four: Grab your token and client ID from the Discord Developer Portal and p
 Step five: Publish slash commands. `node utils/slash-commands.js` (Tip: Global Slash commands take up to an hour to propogate. If you want to test slash commands without waiting, publish them to one guild which is instant by adding `--guildID <guildid>` to the command.)
 
 Step five: Start the bot. `node .`
+
+## Contributors
+
+In the future, contributors **may** recieve perks such as increasing the listeners per guild.
+
+If you want to contribute, please open a Pull Request. If I don't review it within a week, message me on discord `nab138#2035`
+
+Don't know how to code, but still want to help? You can work on improving the README, updating the help command, or changing strings/words.
