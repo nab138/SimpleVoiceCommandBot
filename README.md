@@ -28,7 +28,7 @@ Step five: Start the bot. `node .`
 
 ## Contributors
 
-In the future, contributors **may** recieve perks such as increasing the listeners per guild.
+In the future, contributors **may** recieve perks such as increasing the listeners per guild (If the bot is hosted, of course).
 
 If you want to contribute, please open a Pull Request. If I don't review it within a week, message me on discord `nab138#2035`
 
